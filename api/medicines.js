@@ -8,13 +8,22 @@ router.get("/", async (req, res) => {
   res.json(meds);
 });
 
-router.get("/:id", async (req, res) => {
-  const med = await Medicine.findOne({ midName: req.params.id });
-  if (!med) {
-    return res.status(404).json({ message: "Not Found" });
+router.get("/:medName", async (req, res) => {
+  try {
+    const med = await Medicine.findOne({
+      medName: req.params.medName
+    });
+
+    if (!med) {
+      return res.status(404).json({ message: "Not Found" });
+    }
+
+    res.json(med);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
-  res.json(med);
 });
+
 
 // search by pain...
 router.get("/search/pain", async (req, res) => {
@@ -25,4 +34,4 @@ router.get("/search/pain", async (req, res) => {
   res.json(med);
 });
 
-module.export = router;
+module.exports = router;

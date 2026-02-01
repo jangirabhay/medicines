@@ -1,14 +1,31 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
-const MedicineSchema = new mongoose.Schema({
-  midId: Number,
-  medName: String,
-  medWhat: String,
-  medHelps: [String],
-  medWorks: [String],
-  medAvailable: Array,
-  medDosage: Array,
-  medTake: [String],
+const dosageSchema = new mongoose.Schema({
+  group: { type: String, required: true },
+  dose: { type: String, required: true },
+  frequency: { type: String },
+  maximum: { type: String },
+  note: { type: String }
 });
 
-module.exports = mongoose.model("Medicine", MedicineSchema);
+const medFormSchema = new mongoose.Schema({
+  type: { type: String, required: true },
+  for: { type: String },
+  strength: { type: [String] },
+  route: { type: String },
+  instruction: { type: String }
+});
+
+const medicineSchema = new mongoose.Schema({
+  medId: { type: Number, required: true, unique: true },
+  medName: { type: String, required: true },
+  medWhat: { type: String },
+  medImage: { type: String },
+  medHelps: { type: [String] },
+  medWork: { type: [String] },
+  medForm: medFormSchema,
+  medDosage: [dosageSchema],
+  medTake: { type: [String] }
+}, { timestamps: true });
+
+module.exports = mongoose.model('Medicine', medicineSchema);

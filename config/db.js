@@ -1,15 +1,21 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const connectDB = async () => {
-    try {
-        await mongoose.connect(process.env.MONGO_URI);
-        console.log('====================================');
-        console.log("MongoDB connected");
-        console.log('====================================');
-    } catch (err) {
-        console.error(err);
-        process.exit(1);
+  try {
+    const uri = process.env.MONGO_URI;
+
+    if (!uri) {
+      throw new Error(
+        "MONGO_URI is undefined! Check your .env file or dotenv loading."
+      );
     }
-}
+
+    await mongoose.connect(uri);
+    console.log("MongoDB connected ✅");
+  } catch (error) {
+    console.error("MongoDB connection failed ❌", error.message);
+    process.exit(1);
+  }
+};
 
 module.exports = connectDB;
