@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Medicine = require("../models/Medicine");
 
-router.get("/", async (req, res) => {
+router.get("/getMed", async (req, res) => {
   try {
     const meds = await Medicine.find({});
     res.json(meds);
@@ -11,7 +11,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.post("/", async (req, res) => {
+router.post("/addMed", async (req, res) => {
   try {
     const newMed = new Medicine(req.body);
     const saveMed = await newMed.save();
