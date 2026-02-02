@@ -23,21 +23,27 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.get("/search", async (req, res) => {
+router.get("/:searchTerm", async (req, res) => {
   try {
-    const { search } = req.query; 
+    const { searchTerm } = req.params;
 
-    if (!search) return res.status(400).json({ message: "Provide query 'q'" });
+    if (!searchTerm) {
+      return res.status(400).json({ message: "Provide search term in URL" });
+    }
 
     const meds = await Medicine.find({
-      medName: { $regex: search, $options: "i" }
+      medName: { $regex: searchTerm, $options: "i" }
     });
 
-    res.json(meds);
+    res.status(200).json({
+      count: meds.length,
+      data: meds
+    });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
+
 
 
 
