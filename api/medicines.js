@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Medicine = require("../models/Medicine");
 
-router.get("/getMed", async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const meds = await Medicine.find({});
     res.json(meds);
@@ -11,7 +11,7 @@ router.get("/getMed", async (req, res) => {
   }
 });
 
-router.post("/addMed", async (req, res) => {
+router.post("/", async (req, res) => {
   try {
     const newMed = new Medicine(req.body);
     const saveMed = await newMed.save();
@@ -23,38 +23,23 @@ router.post("/addMed", async (req, res) => {
   }
 });
 
-router.get("/:medName", async (req, res) => {
+router.get("/search", async (req, res) => {
   try {
-    const med = await Medicine.findOne({
-      medName: req.params.medName,
+    const { search } = req.query; 
+
+    if (!search) return res.status(400).json({ message: "Provide query 'q'" });
+
+    const meds = await Medicine.find({
+      medName: { $regex: search, $options: "i" }
     });
-    if (!med) {
-      return res.status(404).json({ message: "Not Found" });
-    }
-    res.json(med);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
+
+    res.json(meds);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
 });
 
-// Search by pain (returns array of matches)
-router.get("/search/pain", async (req, res) => {
-  try {
-    const { pain } = req.query;
-    if (!pain) {
-      return res.status(400).json({ message: "Pain query parameter required" });
-    }
-    const meds = await Medicine.find({
-      medHelps: { $in: [new RegExp(pain, "i")] },
-    });
-    if (meds.length === 0) {
-      return res.status(404).json({ message: "No medicines found" });
-    }
-    res.json(meds);
-  } catch (error) {
-    console.log("Search error: ", error);
-    res.status(500).json({ error: error.message });
-  }
-});
+
+
 
 module.exports = router;
