@@ -49,15 +49,14 @@ router.patch("/:id", async (req, res) => {
     const updateMedicines = await Medicine.findByIdAndUpdate(
       req.params.id,
       req.body,
-      {
-        new: true,
-      },
+      { new: true }
     );
 
     if (!updateMedicines) {
-      return res.status(404).json({ message: "Medicines not found" });
+      return res.status(404).json({ message: "Medicine not found" });
     }
-    res.status(200).json(updatedMedicine);
+
+    res.status(200).json(updateMedicines);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
