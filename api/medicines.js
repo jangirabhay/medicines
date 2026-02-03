@@ -44,7 +44,25 @@ router.get("/:searchTerm", async (req, res) => {
   }
 });
 
+router.patch("/:id", async (req, res) => {
+  try {
+    const updateMedicines = await Medicine.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      {
+        new: true,
+      },
+    );
 
+    if (!updateMedicines) {
+      return res.status(404).json({ message: "Medicines not found" });
+    }
+    res.status(200).json(updatedMedicine);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
 
 
 
