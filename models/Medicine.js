@@ -25,7 +25,8 @@ const medicineSchema = new mongoose.Schema({
   medWork: { type: [String] },
   medForm: medFormSchema,
   medDosage: [dosageSchema],
-  medTake: { type: [String] }
+  medTake: { type: [String] },
+  medAvoid : {type : [String]}
 }, { timestamps: true });
 
 module.exports = mongoose.model('Medicine', medicineSchema);
