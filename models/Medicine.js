@@ -22,7 +22,7 @@ const medicineSchema = new mongoose.Schema({
   medWhat: { type: String },
   medImage: { type: String },
   medHelps: { type: [String] },
-  // medWork: { type: [String] },
+  medWork: { type: [String] },
   medForm: medFormSchema,
   medDosage: [dosageSchema],
   medTake: { type: [String] },
