@@ -23,11 +23,11 @@ const medicineSchema = new mongoose.Schema({
   medImage: { type: String },
   medHelps: { type: [String] },
   // medWork: { type: [String] },
-  medRelief : {type: String},
+  medRelief: {type: String},
   medForm: medFormSchema,
   medDosage: [dosageSchema],
   medTake: { type: [String] },
-  medAvoid : {type : [String]}
+  medAvoid: {type : [String]}
 }, { timestamps: true });
 
 module.exports = mongoose.model('Medicine', medicineSchema);
