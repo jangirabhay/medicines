@@ -32,7 +32,10 @@ router.get("/:searchTerm", async (req, res) => {
     }
 
     const meds = await Medicine.find({
-      medName: { $regex: searchTerm, $options: "i" }
+      $or: [
+        { medName: { $regex: searchTerm, $options: "i" } },
+        { medRelief: { $regex: searchTerm, $options: "i" } },
+      ],
     });
 
     res.status(200).json({
