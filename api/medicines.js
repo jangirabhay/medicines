@@ -36,7 +36,7 @@ router.get("/:searchTerm", async (req, res) => {
         { medName: { $regex: searchTerm, $options: "i" } },
         { medRelief: { $regex: searchTerm, $options: "i" } },
       ],
-    });
+    }).limit(10);
 
     res.status(200).json({
       count: meds.length,
